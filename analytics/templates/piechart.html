@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>PieChart</title>
+	<!-- Import Chart.js library -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+	<div>
+		<canvas id="piechart"></canvas>
+	</div>
+    <script>
+        var graphData={{graph_data|safe}};
+        var graphGender=graphData.gender;
+        var graphLikes=graphData.likes;
+        // Get the canvas element
+        var ctx = document.getElementById('piechart').getContext('2d');
+        
+        // Define the data for the chart
+        var data = {
+          labels:graphGender,
+          datasets: [{
+            label: 'likes',
+            data: graphLikes,
+            backgroundColor: [
+              'rgb(255, 80, 120)',
+              'rgb(40, 162, 235)',
+              'rgb(255, 205, 86)'
+            ]
+          }]
+        };
+        
+        // Create the chart
+        var myPieChart = new Chart(ctx, {
+          type: 'pie',
+          data: data,
+          options: {
+            // Add your chart options here
+          }
+        });
+    </script>
