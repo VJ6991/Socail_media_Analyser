@@ -1,159 +1,112 @@
-{%load static%}
-<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Vectormap</title>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<style>
-		canvas#myMap {
-			margin-top:100px;
-      		margin-left:450px;
-			max-block-size:180%;
-		}
-		header {
-			background-color: #333;
-			color: #fff;
-			padding: 13px;
-			text-align: center;
-		}
-    header h1{
-      margin-top:10px;
-    }
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: Arial, Helvetica, sans-serif;
-		}
-
-		#sidebar {
-			position: fixed;
-			left:0;
-			top:10;
-			height: 100%;
-			width: 200px;
-			background-color: #333;
-			color: #fff;
-			padding: 10px;
-		}
-
-	
-
-		#sidebar ul {
-			margin: 0;
-			padding: 0;
-      padding-top:27px;
-      padding-left:8px;
-			list-style: none;
-		}
-
-		#sidebar li {
-			margin: 0 0 5px 0;
-			padding: 0;
-      margin-top:10px;
-			font-size: 14px;
-		}
-
-		#sidebar a {
-			display: block;
-			color: #fff;
-			text-decoration: none;
-			padding: 5px;
-		}
-
-		#sidebar a:hover {
-			background-color: #555;
-		}
-
-		#content {
-			margin-left: 200px;
-			padding: 20px;
-		}
-
-		h1 {
-			margin: 0 0 20px 0;
-			padding: 0;
-			font-size: 24px;
-		}
-	
-	</style>
-</head>
-<body>
-<header>
-	<h1>DASHBOARD</h1>
-</header>
-<div id="sidebar">
-	
-	<ul>
-		<li><a href="linegraph">LINE GRAPH</a></li>
-		<li><a href="piechart">PIE CHART</a></li>
-		<li><a href="bargraph">BAR GRAPH</a></li>
-		<li><a href="vectormap">VECTOR MAP</a></li>
-	</ul>
-</div>
-<div>
-	<div class="container">
-        <canvas id="myMap"></canvas>
-    </div>
+  <head>
+    <style>
+        .vectormap{
+          margin-top:50px;
+          margin-left:350px;
+          max-block-size:180%;
+          width: 900px; 
+          height: 500px;
+        }
+        header {
+          background-color: #333;
+          color: #fff;
+          padding: 13px;
+          text-align: center;
+        }
+        header h1{
+          margin-top:10px;
+        }
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, Helvetica, sans-serif;
+        }
     
-    <script src="{% static 'js/chart.bundle.js' %}"></script>
-<script src="{% static 'js/chartjs-plugin-vector-map.js' %}"></script>
-<script>
-Chart.plugins.register({
-    beforeDraw: function(chartInstance) {
-        var ctx = chartInstance.chart.ctx;
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, chartInstance.chart.width, chartInstance.chart.height);
-    }
-});
-
-Chart.defaults.global.defaultFontFamily = 'Lato';
-Chart.defaults.global.defaultFontSize = 16;
-
-var options = {
-    plugins: {
-        vectorMap: {
-            // Configure the vector map plugin options here
-            color: '#ffffff',
-            hoverOpacity: 0.7,
-            backgroundColor: '#0d47a1',
-            selectedColor: '#ff5722',
-            enableZoom: true,
-            showTooltip: true,
-            scaleColors: ['#C8EEFF', '#006491'],
-            normalizeFunction: 'polynomial',
-            dataLabels: {
-                enabled: true,
-                format: '{0}',
-                style: {
-                    fontSize: 12,
-                    fontWeight: 'bold'
-                }
-            }
+        #sidebar {
+          position: fixed;
+          left:0;
+          top:10;
+          height: 100%;
+          width: 200px;
+          background-color: #333;
+          color: #fff;
+          padding: 10px;
         }
-    }
-};
-
-var data = {
-    labels: ['US', 'GB', 'CN', 'JP'],
-    datasets: [{
-        label: 'Data',
-        data: [
-            <!-- {% for item in data %}
-                {{ item.likes }},
-            {% endfor %} -->
-            1,2,3,4
-        ],
-        backgroundColor: function(context) {
-            var value = context.dataset.data[context.dataIndex];
-            return value > 5000000 ? 'red' : 'green';
+    
+      
+    
+        #sidebar ul {
+          margin: 0;
+          padding: 0;
+          padding-top:100px;
+          padding-left:8px;
+          list-style: none;
         }
-    }]
-};
+    
+        #sidebar li {
+          margin: 0 0 5px 0;
+          padding: 0;
+          margin-top:10px;
+          font-size: 14px;
+        }
+    
+        #sidebar a {
+          display: block;
+          color: #fff;
+          text-decoration: none;
+          padding: 5px;
+        }
+    
+        #sidebar a:hover {
+          background-color: #555;
+        }
+    
+        #content {
+          margin-left: 200px;
+          padding: 20px;
+        }
+    
+        h1 {
+          margin: 0 0 20px 0;
+          padding: 0;
+          font-size: 24px;
+        }
+      
+      </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {
+        'packages':['geochart'],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
 
-var chart = new Chart(document.getElementById('myMap'), {
-    type: 'vectorMap',
-    data: data,
-    options: options
-});
-</script>
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable({{values|safe}});
+        
+
+        var options = {};
+
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+        <h1>DASHBOARD</h1>
+      </header>
+      <div id="sidebar">
+        
+        <ul>
+          <li><a href="linegraph">LINE GRAPH</a></li>
+          <li><a href="piechart">PIE CHART</a></li>
+          <li><a href="bargraph">BAR GRAPH</a></li>
+          <li><a href="vectormap">VECTOR MAP</a></li>
+        </ul>
+      </div>
+      <div id="hor_bar_chart"  class="bargraph"></div>
+    <div id="regions_div" style="width: 900px; height: 500px;" class="vectormap"></div>
+  </body>
+</html>

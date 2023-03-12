@@ -5,69 +5,81 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-6UOzti+DsRvJvWaqLf20pZGIxKZgSevJYhW3UfLz0J59gjK4v4V+I3aJfZGpnBr+pQw+/EYjLHnGnGMJg38z/g==" crossorigin="anonymous" />
-	<style>
-        header {
-			background-color: #333;
-			color: #fff;
-			padding: 13px;
-			text-align: center;
+        <style>
+			canvas#linegraph {
+				margin-top:100px;
+				  margin-left:450px;
+				max-block-size:180%;
+			}
+			header {
+				background-color: #333;
+				color: #fff;
+				padding: 13px;
+				text-align: center;
+			}
+		header h1{
+		  margin-top:10px;
 		}
-		body {
-			margin: 0;
-			padding: 0;
-			font-family: Arial, Helvetica, sans-serif;
-		}
-
-		#sidebar {
-			position: fixed;
-			left:0;
-			top:10;
-			height: 100%;
-			width: 200px;
-			background-color: #333;
-			color: #fff;
-			padding: 10px;
-		}
-
+			body {
+				margin: 0;
+				padding: 0;
+				font-family: Arial, Helvetica, sans-serif;
+			}
 	
-
-		#sidebar ul {
-			margin: 0;
-			padding: 0;
-			list-style: none;
-		}
-
-		#sidebar li {
-			margin: 0 0 5px 0;
-			padding: 0;
-			font-size: 14px;
-		}
-
-		#sidebar a {
-			display: block;
-			color: #fff;
-			text-decoration: none;
-			padding: 5px;
-		}
-
-		#sidebar a:hover {
-			background-color: #555;
-		}
-
-		#content {
-			margin-left: 200px;
-			padding: 20px;
-		}
-
-		h1 {
-			margin: 0 0 20px 0;
-			padding: 0;
-			font-size: 24px;
-		}
-	</style>
-</head>
-<body>
-    <header>
+			#sidebar {
+				position: fixed;
+				left:0;
+				top:10;
+				height: 100%;
+				width: 200px;
+				background-color: #333;
+				color: #fff;
+				padding: 10px;
+			}
+	
+		
+	
+			#sidebar ul {
+				margin: 0;
+				padding: 0;
+		  padding-top:27px;
+		  padding-left:8px;
+				list-style: none;
+			}
+	
+			#sidebar li {
+				margin: 0 0 5px 0;
+				padding: 0;
+		  margin-top:10px;
+				font-size: 14px;
+			}
+	
+			#sidebar a {
+				display: block;
+				color: #fff;
+				text-decoration: none;
+				padding: 5px;
+			}
+	
+			#sidebar a:hover {
+				background-color: #555;
+			}
+	
+			#content {
+				margin-left: 200px;
+				padding: 20px;
+			}
+	
+			h1 {
+				margin: 0 0 20px 0;
+				padding: 0;
+				font-size: 24px;
+			}
+		
+		</style>
+	</head>
+	<body>
+	<header>
 		<h1>DASHBOARD</h1>
 	</header>
 	<div id="sidebar">
@@ -76,25 +88,50 @@
 			<li><a href="linegraph">LINE GRAPH</a></li>
 			<li><a href="piechart">PIE CHART</a></li>
 			<li><a href="bargraph">BAR GRAPH</a></li>
-            <li><a href="vectormap">VECTOR MAP</a></li>
+			<li><a href="vectormap">VECTOR MAP</a></li>
 		</ul>
 	</div>
-	<div id="content">
-		
-		<canvas id="chart1"></canvas>
-	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script>
-		// Create Chart 1
-		var ctx = document.getElementById('chart1').getContext('2d');
-		var chart1 = new Chart(ctx, {
-			type: 'bar',
-			data: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	<div>
+		<div>
+			<canvas id="linegraph"></canvas>
+		</div>
+		<script>
+			var chartData = {{ chart_data|safe }};
+				var chartdates = chartData.dates;
+			var chartLikes = chartData.likes;
+			var chartViews = chartData.views;
+	
+			var graphData = {
+				labels: chartdates,
 				datasets: [{
-					label: 'Sales',
-					data: [12, 19, 3, 5, 2, 3, 10],
-					backgroundColor: 'rgba(54, 162, 235, 0.2)',
-					borderColor: 'rgba(54, 162, 235, 1)',
+					label: 'likes',
+					data: chartLikes,
+					backgroundColor: 'rgba(255, 100, 140, 0.3)',
+					borderColor: 'rgba(255, 99, 132, 1)',
 					borderWidth: 1
+				},{label: 'Views',
+				data: chartViews,
+				backgroundColor: 'rgba(100, 99, 132, 1)',
+				borderColor: 'rgba(100, 99, 132, 1)',
+				borderWidth: 1}]
+			};
+			
+			var graphOptions = {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			};
+			
+			var graph = new Chart(document.getElementById('linegraph'), {
+				type: 'line',
+				data: graphData,
+				options: graphOptions
+			});
+		</script>
+	</body>
+	</html>
+	
