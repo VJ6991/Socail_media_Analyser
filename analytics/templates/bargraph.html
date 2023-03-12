@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<!-- <head>
+<head>
 	<meta charset="UTF-8">
-	<title>bargraph</title>
+	<title>Horizontal Bar Graph</title>
 	<!-- Import Chart.js library -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -10,86 +10,56 @@
 	<div>
 		<canvas id="bargraph"></canvas>
 	</div>
-    <script>
-        // Data for the chart
-        var data = {
-            labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
-            datasets: [{
-                label: 'Number of Likes',
-                data: [15, 23, 27, 18, 10],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-            // Get the canvas element
-    var ctx = document.getElementById('bargraph').getContext('2d');
-    // Create the chart
-var chart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: data,
-    options: {
-        scales: {
-            xAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-
-        </script>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>linegraph</title>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-	<div>
-		<canvas id="linegraph"></canvas>
-	</div>
 	<script>
-		var chartData = {{ chart_data|safe }};
-   	 	var chartdates = chartData.dates;
-    	var chartLikes = chartData.likes;
-    	var chartViews = chartData.views;
-
-		var graphData = {
-			labels: chartdates,
+		// Data for the chart
+		var data = {
+			labels: {% autoescape off %}{{ age_ranges|safe }}{% endautoescape %},
 			datasets: [{
-				label: 'likes',
-				data: chartLikes,
-				backgroundColor: 'rgba(255, 100, 140, 0.3)',
-				borderColor: 'rgba(255, 99, 132, 1)',
+				label: 'Number of Likes',
+				data: {% autoescape off %}{{ num_likes|safe }}{% endautoescape %},
+				backgroundColor: 'rgba(54, 162, 235, 0.2)',
+				borderColor: 'rgba(54, 162, 235, 1)',
 				borderWidth: 1
-			},{label: 'Views',
-			data: chartViews,
-			backgroundColor: 'rgba(100, 99, 132, 1)',
-			borderColor: 'rgba(100, 99, 132, 1)',
-			borderWidth: 1}]
+			}]
 		};
-		
-		var graphOptions = {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero: true
-					}
-				}]
+		// Get the canvas element
+		var ctx = document.getElementById('bargraph').getContext('2d');
+		// Create the chart
+		var chart = new Chart(ctx, {
+			type: 'horizontalBar',
+			data: data,
+			options: {
+				scales: {
+					xAxes: [{
+						ticks: {
+							beginAtZero:true
+						}
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Age Range'
+						}
+					}]
+				}
 			}
-		};
-		
-		var graph = new Chart(document.getElementById('linegraph'), {
-			type: 'line',
-			data: graphData,
-			options: graphOptions
 		});
 	</script>
 </body>
 </html>
+var MeSeChart = new Chart(MeSeContext, {
+    type: 'horizontalBar',
+    data: MeSeData,
+    options: {
+        scales: {
+            xAxes: [{
+                ticks: {
+                    min: 60 // Edit the value according to what you need
+                }
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        }
+    }
+});

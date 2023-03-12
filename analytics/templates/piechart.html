@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,8 +6,96 @@
 	<title>PieChart</title>
 	<!-- Import Chart.js library -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-6UOzti+DsRvJvWaqLf20pZGIxKZgSevJYhW3UfLz0J59gjK4v4V+I3aJfZGpnBr+pQw+/EYjLHnGnGMJg38z/g==" crossorigin="anonymous" />
+  <!-- <link rel="stylesheet" href="{%static 'dashboard.css'%}"> -->
+
+  <style>
+    canvas#piechart {
+      margin-top:40px;
+      margin-left:500px;
+      max-block-size: 140%;
+    }
+
+    header {
+			background-color: #333;
+			color: #fff;
+			padding: 13px;
+			text-align: center;
+		}
+    header h1{
+      margin-top:10px;
+    }
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		#sidebar {
+			position: fixed;
+			left:0;
+			top:10;
+			height: 100%;
+			width: 200px;
+			background-color: #333;
+			color: #fff;
+			padding: 10px;
+		}
+
+	
+
+		#sidebar ul {
+			margin: 0;
+			padding: 0;
+      padding-top:27px;
+      padding-left:8px;
+			list-style: none;
+		}
+
+		#sidebar li {
+			margin: 0 0 5px 0;
+			padding: 0;
+      margin-top:10px;
+			font-size: 14px;
+		}
+
+		#sidebar a {
+			display: block;
+			color: #fff;
+			text-decoration: none;
+			padding: 5px;
+		}
+
+		#sidebar a:hover {
+			background-color: #555;
+		}
+
+		#content {
+			margin-left: 200px;
+			padding: 20px;
+		}
+
+		h1 {
+			margin: 0 0 20px 0;
+			padding: 0;
+			font-size: 24px;
+		}
+	
+	</style>
 </head>
 <body>
+  <header>
+		<h1>DASHBOARD</h1>
+	</header>
+	<div id="sidebar">
+		
+		<ul>
+			<li><a href="linegraph">LINE GRAPH</a></li>
+			<li><a href="piechart">PIE CHART</a></li>
+			<li><a href="bargraph">BAR GRAPH</a></li>
+            <li><a href="vectormap">VECTOR MAP</a></li>
+		</ul>
+	</div>
 	<div>
 		<canvas id="piechart"></canvas>
 	</div>
