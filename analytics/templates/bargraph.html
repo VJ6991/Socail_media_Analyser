@@ -2,64 +2,137 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Horizontal Bar Graph</title>
-	<!-- Import Chart.js library -->
+	<title>Bargraph</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<style>
+		canvas#bargraph {
+			margin-top:100px;
+      		margin-left:450px;
+			max-block-size:180%;
+		}
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 13px;
+			text-align: center;
+		}
+    header h1{
+      margin-top:10px;
+    }
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		#sidebar {
+			position: fixed;
+			left:0;
+			top:10;
+			height: 100%;
+			width: 200px;
+			background-color: #333;
+			color: #fff;
+			padding: 10px;
+		}
+
+	
+
+		#sidebar ul {
+			margin: 0;
+			padding: 0;
+      padding-top:27px;
+      padding-left:8px;
+			list-style: none;
+		}
+
+		#sidebar li {
+			margin: 0 0 5px 0;
+			padding: 0;
+      margin-top:10px;
+			font-size: 14px;
+		}
+
+		#sidebar a {
+			display: block;
+			color: #fff;
+			text-decoration: none;
+			padding: 5px;
+		}
+
+		#sidebar a:hover {
+			background-color: #555;
+		}
+
+		#content {
+			margin-left: 200px;
+			padding: 20px;
+		}
+
+		h1 {
+			margin: 0 0 20px 0;
+			padding: 0;
+			font-size: 24px;
+		}
+	
+	</style>
 </head>
 <body>
+<header>
+	<h1>DASHBOARD</h1>
+</header>
+<div id="sidebar">
+	
+	<ul>
+		<li><a href="linegraph">LINE GRAPH</a></li>
+		<li><a href="piechart">PIE CHART</a></li>
+		<li><a href="bargraph">BAR GRAPH</a></li>
+		<li><a href="vectormap">VECTOR MAP</a></li>
+	</ul>
+</div>
+<div>
 	<div>
 		<canvas id="bargraph"></canvas>
 	</div>
-	<script>
-		// Data for the chart
-		var data = {
-			labels: {% autoescape off %}{{ age_ranges|safe }}{% endautoescape %},
-			datasets: [{
-				label: 'Number of Likes',
-				data: {% autoescape off %}{{ num_likes|safe }}{% endautoescape %},
-				backgroundColor: 'rgba(54, 162, 235, 0.2)',
-				borderColor: 'rgba(54, 162, 235, 1)',
-				borderWidth: 1
-			}]
-		};
-		// Get the canvas element
-		var ctx = document.getElementById('bargraph').getContext('2d');
-		// Create the chart
-		var chart = new Chart(ctx, {
-			type: 'horizontalBar',
-			data: data,
-			options: {
-				scales: {
-					xAxes: [{
-						ticks: {
-							beginAtZero:true
-						}
-					}],
-					yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: 'Age Range'
-						}
-					}]
-				}
-			}
-		});
-	</script>
+    <script>
+        var ctx = document.getElementById('bargraph').getContext('2d');
+        var data = {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Age Range vs Number of Likes',
+                data: {{ data|safe }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+        var options = {
+            scales: {
+				xAxes: [{
+					ticks: {
+						min: 60 // Edit the value according to what you need
+					}
+				}],
+				yAxes: [{
+					stacked: true
+				}]
+            }
+        };
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: data,
+            options: options
+        });
+    </script>
 </body>
 </html>
-var MeSeChart = new Chart(MeSeContext, {
-    type: 'horizontalBar',
-    data: MeSeData,
-    options: {
-        scales: {
-            xAxes: [{
-                ticks: {
-                    min: 60 // Edit the value according to what you need
-                }
-            }],
-            yAxes: [{
-                stacked: true
-            }]
-        }
-    }
-});
