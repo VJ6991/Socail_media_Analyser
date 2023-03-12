@@ -3,6 +3,9 @@ django installed in the system-  version -4.1.7
 How to run the app:
 - Go to project directory in command promt
 -change directory to analyser
+-for converting our models fields to database fields run the following command:
+    -python manage.py makemigrations
+    -python manage.py migrate
 -Fire command python manage.py runserver
 -Then you see a url in the terminal.Follow the url.
 -you will land on registration page.
